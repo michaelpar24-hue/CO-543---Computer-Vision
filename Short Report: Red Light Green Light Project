@@ -1,0 +1,38 @@
+Michael Tomas M. Par
+CO 543 - Computer Vision
+MEP-EcE
+
+Short Report: Red Light Green Light Project
+
+In this project, “Red Light, Green Light (RLGL)," I used a Python desktop script (opencv-python) to make a real-time computer vision system. The system uses a state machine to handle live webcam data, find motion, and control how the application works. For this project, we want to learn basic/fundamental computer vision skills and how to use states, timing parameters, and human input to run programs as stated in our learning outcomes.
+
+The algorithm used in this project operates on real-time video frames captured from a webcam. For every frame captured, it goes through preprocessing and motion analysis to identify changes between consecutive frames. The image processing pipeline includes Frame Capture -> Grayscale Conversion -> Gaussian Blur -> Frame Differencing -> Motion Scoring -> Decision Logic -> User Interaction, consecutively. This approach simplifies the idea of image processing and detection, making it practical for real-time execution. While the state machine design allows me to control the program flow by declaring the correct state for the machine to run. These states include IDLE (no significant motion detected), GREEN (allows motion to be detected), WARNING (no motion detected in green state), RED (there should be “NO MOTION or higher than the threshold” detected), and START/RESTART/EXIT state (for user interaction). These state machines make sure that the program/system functions in an established pattern based on the algorithm made.
+
+The parameters that I used in this project were based on the suggested baseline parameters in our PDF file for this project. There is no adjustment made when using those parameters. 
+
+GREEN_MOVE_THRESHOLD = 0.04
+RED_MOVE_THRESHOLD = 0.055
+RED_GRACE_MS = 650
+IDLE_WARNING_MS = 1800
+IDLE_DEATH_MS = 3600
+GREEN_MIN_MS = 2600
+GREEN_MAX_MS = 4200
+RED_MIN_MS = 1700
+RED_MAX_MS = 2900
+FRAME_WIDTH = 640
+
+While doing this project, I encountered a lot of problems and failures. Starting from a wrong Python interpreter in my VS Code. All projects were working before I closed my VS Code app, but when I opened it after several days, it was not working anymore. I tried installing and reinstalling the OpenCV module and Ultralytics (pip install opencv-python ultralytics), but it still doesn’t work. Then, after reading a lot of troubleshooting guides on the internet, I found out that I’m using a different Python interpreter between the terminal and editor environments. This solves my problem for several days. 
+
+As I progressed in developing this project, I encountered an error called “UnboundLocalError” in my Motion Detection Section. This occurred when I was accessing the previous grayscale frame during the motion detection to calculate the motion score. I think the cause of this is the variable holding the previous frame before being initialized in the first loop iteration. What I did in my program to solve this is to use a try-except block. I made an exception for UnboundLocalError for the program to continue or pass or just print something for it to move on to the next line of code.
+
+Another failure that I encountered is that I need to press ‘r’ (to restart the game), ‘s’ (to start the game), and ‘e’ (to exit) several times before it executes. I think the cause of this is debouncing, or the key pressed was missed due to the frame processing delays. What I did to solve this is to ensure that cv2.waitkey() was only called once per loop because the first time I used this code, I used it separately for the three conditions.
+
+In summary, the project successfully shows a computer vision system that can sense motion and control itself based on its current state. The first three example projects and the OpenCV documentation (https://docs.opencv.org/3.4/dd/d43/tutorial
+_py_video_display.html) shows a clearer view of instruction on how computer vision works. Example codes were taken and used to complete this project. It also provides a better foundation in understanding the basics of logic and codes using Python OpenCV for machine vision. I can say that the final system is stable, made in separate sections, and designed for further expansion into more advanced applications.
+
+
+
+
+
+
+
