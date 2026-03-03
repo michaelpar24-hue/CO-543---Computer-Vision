@@ -2,7 +2,7 @@ Michael Tomas M. Par
 CO 543 - Computer Vision
 MEP-EcE
 
-Short Report: Red Light Green Light Project
+Short Report: Red Light Green Light Project - Developed in Python OpenCV
 
 In this project, “Red Light, Green Light (RLGL)," I used a Python desktop script (opencv-python) to make a real-time computer vision system. The system uses a state machine to handle live webcam data, find motion, and control how the application works. For this project, we want to learn basic/fundamental computer vision skills and how to use states, timing parameters, and human input to run programs as stated in our learning outcomes.
 
