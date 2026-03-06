@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RLGL Web Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .green {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .red {
+            background-color: #F44336;
+            color: white;
+        }
+
+        button {
+	    width: 150px;
+    	    margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .start {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .stop {
+            background-color: #F44336;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        img {
+            margin-top: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>RLGL Dashboard</h1>
+
+        <div id="statusBox" class="status green">
+            GREEN – You May Move
+        </div>
+
+        <button class="start" onclick="setGreen()">Start Game</button>
+        <button class="stop" onclick="setRed()">Restart</button>
+
+        <!-- LIVE CAMERA FEED -->
+        <h2>Live Camera Feed</h2>
+        <img src="http://127.0.0.1:8000/video" width="640" />
+    </div>
+
+    <script>
+        function setGreen() {
+            fetch("http://127.0.0.1:8000/start", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => updateStatus(data.state));
+        }
+
+        function setRed() {
+            fetch("http://127.0.0.1:8000/stop", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => updateStatus(data.state));
+        }
+
+        function updateStatus(state) {
+            const box = document.getElementById("statusBox");
+
+            if (state === "GREEN") {
+                box.className = "status green";
+                box.innerText = "GREEN – You May Move";
+            } else if (state === "RED") {
+                box.className = "status red";
+                box.innerText = "RED – Do Not Move";
+            } else if (state === "WARNING") {
+                box.className = "status red";
+                box.innerText = "WARNING – Move Now!";
+            } else if (state === "DEAD") {
+                box.className = "status red";
+                box.innerText = "YOU DIED!";
+            }
+        }
+
+        // Auto-refresh state every second
+        setInterval(() => {
+            fetch("http://127.0.0.1:8000/status")
+                .then(res => res.json())
+                .then(data => updateStatus(data.state));
+        }, 1000);
+    </script>
+
+</body>
+</html>
