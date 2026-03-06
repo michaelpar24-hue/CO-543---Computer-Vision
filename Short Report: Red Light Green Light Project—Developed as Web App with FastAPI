@@ -1,0 +1,40 @@
+Michael Tomas M. Par
+CO 543 - Computer Vision
+MEP-EcE
+
+Short Report: Red Light Green Light Project—Developed as Web App with FastAPI
+
+	Before I started this project in Web App with FastAPI, I had already developed this project in Python OpenCV. It works well, and I’m much more familiar with the Python environment, although I'm also familiar with HTML, CSS, and JS, but my knowledge using these foundational tools was not that deep. 
+
+	The algorithm used for this project is based on frame difference motion detection. For every frame captured from the webcam, it is actually processed, following these steps: Frame capturing → Frame resizing to a fixed width → Converting to grayscale → Applying Gaussian blur → Calculating frame absolute difference from previous and current frame → Computing motion score → Comparing the motion score from the given threshold. After comparing the motion score and given threshold, the result of this will be the basis for what will be the “State” of the program. 
+
+	This RLGL game project operates using machine states such as start (the initial state before the game begins), green (the player should make a move), warning (when the player doesn't move in the green state), red (the player should stay still), and dead (the player failed the rule). The state transitions as follows: 
+
+START → GREEN (game starts)
+
+GREEN → RED (randomized time between 2.6 and 4.2 sec)
+
+GREEN → WARNING (player is not making a move)
+
+WARNING → DEAD (player is staying still)
+
+RED → DEAD (player is moving while in red state)
+
+RED → GREEN (timer expires)
+
+The parameters that I used in this project were based on the suggested baseline parameters in our PDF file for this project. There is no adjustment made when using those parameters. 
+
+GREEN_MOVE_THRESHOLD = 0.04
+RED_MOVE_THRESHOLD = 0.055
+RED_GRACE_MS = 650
+IDLE_WARNING_MS = 1800
+IDLE_DEATH_MS = 3600
+GREEN_MIN_MS = 2600
+GREEN_MAX_MS = 4200
+RED_MIN_MS = 1700
+RED_MAX_MS = 2900
+FRAME_WIDTH = 640
+
+While doing this game project, one of the failures I encountered was when I was trying to adapt my Python code to a web application. Because OpenCV normally runs in a Python local environment application or window, I seek assistance and use LLMs such as ChatGPT to understand first how I can run or adapt my Python code to view or access the webcam using the web browser; however, before I can access the webcam in my browser, I need to understand how FastAPI works. This is the second failure I need to fix. I need to understand how to use FastAPI endpoints. It was hard to understand at first how a Python script acts like a web server and talks to a browser's interface. What I did at that moment was to experiment with sample codes to see how FastAPI provides decorators for all standard HTTP methods to perform CRUD (Create, Read, Update, Delete) operations. The next failure I encountered was  synchronizing the game state between the backend and frontend. The solution to this is to use setInterval() (a JavaScript timer function) that executes code such as “fetch” at a fixed time interval.
+
+In summary, this project shows how computer vision and web applications can work together to make a motion detection game that we can play. OpenCV is used to process images, FastAPI is used for backend services, and a web dashboard is used for the user interface or frontend. Even though the system can sense motion and change its state, working on it required me to learn a lot of new technologies, such as FastAPI, API endpoints, and browser communication.
